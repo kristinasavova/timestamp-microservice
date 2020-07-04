@@ -17,22 +17,20 @@ router.get('/timestamp', (req, res, next) => {
 router.get('/timestamp/:date_string', (req, res, next) => {
 
     const { date_string } = req.params;
-
-    if (/\d{5,}/.test(date_string)) {
-        const unix = parseInt(date_string);
-        const utc = new Date(unix).toUTCString();
-        res.json({ unix, utc });
-    } 
-
     const date = new Date(date_string).toString();
+    console.log(date);
 
-    if (date === 'Invalid Date') {
+    if (/^\d{5,}$/.test(date_string)) {
+        const unix = parseInt(date_string);
+        const utc = new Date(unix * 1000).toUTCString(); 
+        res.json({ unix, utc });
+    } else if (date === 'Invalid Date') {
         const err = new Error('Invalid Date');
         err.status = 400;
         next(err); 
     } else {
-        const unix = parseInt(new Date(date_string).getTime());
-        const utc = new Date(unix).toUTCString();
+        const unix = parseInt(new Date(date_string).getTime()/1000);
+        const utc = new Date(date_string).toUTCString();
         res.json({ unix, utc });
     }
 });
