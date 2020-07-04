@@ -17,7 +17,7 @@ router.get('/timestamp', (req, res, next) => {
 router.get('/timestamp/:date_string', (req, res, next) => {
     const { date_string } = req.params;
     if (/^([12]\d{3}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01]))$/.test(date_string)) {
-        const unix = parseInt(new Date(date_string).getTime() / 1000);
+        const unix = parseInt(new Date(date_string).getTime() / 1000); // in seconds 
         const utc = new Date(date_string).toUTCString();
         res.json({ unix, utc });
     } else if (/^\d{5,}$/.test(date_string)) {
